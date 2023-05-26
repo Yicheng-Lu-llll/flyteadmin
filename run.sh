@@ -13,7 +13,7 @@ git tag -d $current_tag
 git push origin :refs/tags/$current_tag
 
 
-new_tag=current_tag + 1
+new_tag=$((current_tag + 1))
 echo !!!!!!!!!!!!
 echo $new_tag
 echo !!!!!!!!!!!!
