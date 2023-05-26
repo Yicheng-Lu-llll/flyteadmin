@@ -659,6 +659,8 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
+	
+	fmt.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 
 	return &admin.WorkflowExecutionGetMetricsResponse{Span: span}, nil
 }
