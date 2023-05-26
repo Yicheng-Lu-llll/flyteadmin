@@ -9,7 +9,7 @@ git tag -d $current_tag
 git push origin :refs/tags/$current_tag
 
 
-new_tag=$(echo $latest_tag | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+new_tag=current_tag + 0.01
 echo !!!!!!!!!!!!
 echo $new_tag
 echo !!!!!!!!!!!!
