@@ -2,8 +2,14 @@ git add .
 git commit -s -m "develop"
 git push
 
-git tag -d v1.0.0
-git push origin :refs/tags/v1.0.0
 
-git tag v1.0.1
-git push origin v1.0.1
+current_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+git tag -d $current_tag
+git push origin :refs/tags/$current_tag
+
+
+new_tag=$(echo $latest_tag | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+echo $new_tag
+git tag $new_tag
+git push origin $new_tag
