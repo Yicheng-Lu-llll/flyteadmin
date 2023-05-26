@@ -5,6 +5,10 @@ git push
 
 current_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
 
+if [ -z "$current_tag" ]; then
+    current_tag=1
+fi
+
 git tag -d $current_tag
 git push origin :refs/tags/$current_tag
 
