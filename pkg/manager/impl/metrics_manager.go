@@ -551,9 +551,18 @@ func (m *MetricsManager) parseSubworkflowNodeExecution(ctx context.Context,
 	return nil
 }
 
+func getTimeItSpans(taskId *core.TaskExecutionIdentifier) []*core.Span {
+	startedAt := time.Now()
+	endAt := startedAt.Add(time.Second)
+	item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "download S3")
+	return []*core.Span{item}
+
+}
+
 // parseTaskExecution partitions the task execution into a collection of Categorical and Reference Spans which are
 // returned as a hierarchical breakdown of the task execution.
 func parseTaskExecution(taskExecution *admin.TaskExecution) *core.Span {
+	fmt.Println("!I am in taskExecution!")
 	spans := make([]*core.Span, 0)
 
 	// check if plugin has started yet
@@ -566,10 +575,12 @@ func parseTaskExecution(taskExecution *admin.TaskExecution) *core.Span {
 		// check if plugin has completed yet
 		if taskExecution.Closure.Duration == nil || reflect.DeepEqual(taskExecution.Closure.Duration, emptyDuration) {
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskExecution.Closure.UpdatedAt, taskRuntime))
+			// spans = append(spans,getTimeItSpans(taskExecution.Id)...)
 		} else {
 			// plugin execution
 			taskEndTime := timestamppb.New(taskExecution.Closure.StartedAt.AsTime().Add(taskExecution.Closure.Duration.AsDuration()))
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskEndTime, taskRuntime))
+			spans = append(spans,getTimeItSpans(taskExecution.Id)...)
 
 			// backend overhead
 			if !taskExecution.Closure.UpdatedAt.AsTime().Before(taskEndTime.AsTime()) {
