@@ -13,7 +13,7 @@ git tag -d $current_tag
 git push origin :refs/tags/$current_tag
 
 
-new_tag=v1.1.2
+new_tag=v1.1.3
 
 git tag $new_tag
 git push origin $new_tag
