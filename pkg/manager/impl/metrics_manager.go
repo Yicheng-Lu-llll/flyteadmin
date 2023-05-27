@@ -665,6 +665,7 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	for _, s := range span.Spans {
 		fmt.Println(span.Id)
 	}
+	fmt.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 
 	return &admin.WorkflowExecutionGetMetricsResponse{Span: span}, nil
 }
