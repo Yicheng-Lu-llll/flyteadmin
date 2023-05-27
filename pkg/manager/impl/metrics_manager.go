@@ -687,7 +687,7 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	
 	fmt.Println("start!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 	//print all spans here, use the root of span
-	printSpans(span)
+	printSpans(span, "")
 	fmt.Println("finish!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 
 	return &admin.WorkflowExecutionGetMetricsResponse{Span: span}, nil
