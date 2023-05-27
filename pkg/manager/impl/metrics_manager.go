@@ -718,7 +718,7 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	var timitSpan core.Span
 	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	fmt.Println("timitSpan is ", timitSpan)
-	// printSpans(timitSpan, "")
+	printSpans(&timitSpan, "")
 
 
 
