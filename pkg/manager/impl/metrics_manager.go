@@ -20,6 +20,8 @@ import (
 	"github.com/golang/protobuf/ptypes/timestamp"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	dataInterfaces "github.com/flyteorg/flyteadmin/pkg/data/interfaces"
 )
 
 const (
@@ -59,6 +61,7 @@ type MetricsManager struct {
 	nodeExecutionManager interfaces.NodeExecutionInterface
 	taskExecutionManager interfaces.TaskExecutionInterface
 	metrics              metrics
+	urlData              dataInterfaces.RemoteURLInterface
 }
 
 // createOperationSpan returns a Span defined by the provided arguments.
@@ -554,7 +557,7 @@ func (m *MetricsManager) parseSubworkflowNodeExecution(ctx context.Context,
 func getTimeItSpans(taskId *core.TaskExecutionIdentifier) []*core.Span {
 	startedAt := time.Now()
 	endAt := startedAt.Add(time.Second)
-	item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "download S3")
+	item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "This is a just a sample")
 	return []*core.Span{item}
 
 }
@@ -575,7 +578,7 @@ func parseTaskExecution(taskExecution *admin.TaskExecution) *core.Span {
 		// check if plugin has completed yet
 		if taskExecution.Closure.Duration == nil || reflect.DeepEqual(taskExecution.Closure.Duration, emptyDuration) {
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskExecution.Closure.UpdatedAt, taskRuntime))
-			// spans = append(spans,getTimeItSpans(taskExecution.Id)...)
+			spans = append(spans,getTimeItSpans(taskExecution.Id)...)
 		} else {
 			// plugin execution
 			taskEndTime := timestamppb.New(taskExecution.Closure.StartedAt.AsTime().Add(taskExecution.Closure.Duration.AsDuration()))
@@ -699,6 +702,14 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	fmt.Println("start!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 	//print all spans here, use the root of span
 	printSpans(span, "")
+	
+	 blob, err := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
+	 if err != nil {
+		 return nil, err
+	 }
+	 fmt.Println("blob is ", blob)
+
+
 	fmt.Println("finish!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 
 	return &admin.WorkflowExecutionGetMetricsResponse{Span: span}, nil
@@ -710,7 +721,7 @@ func NewMetricsManager(
 	executionManager interfaces.ExecutionInterface,
 	nodeExecutionManager interfaces.NodeExecutionInterface,
 	taskExecutionManager interfaces.TaskExecutionInterface,
-	scope promutils.Scope) interfaces.MetricsInterface {
+	scope promutils.Scope, urlData dataInterfaces.RemoteURLInterface) interfaces.MetricsInterface {
 	metrics := metrics{
 		Scope: scope,
 	}
@@ -721,5 +732,6 @@ func NewMetricsManager(
 		nodeExecutionManager: nodeExecutionManager,
 		taskExecutionManager: taskExecutionManager,
 		metrics:              metrics,
+		urlData:              urlData,
 	}
 }
