@@ -643,6 +643,37 @@ func (m *MetricsManager) parseTaskNodeExecution(ctx context.Context, nodeExecuti
 	return nil
 }
 
+
+
+
+
+func printSpans(span *core.Span) {
+	switch id := span.Id.(type) {
+	case *core.Span_WorkflowId:
+		fmt.Println("Workflow ID:", id.WorkflowId)
+	case *core.Span_NodeId:
+		fmt.Println("Node ID:", id.NodeId)
+	case *core.Span_TaskId:
+		fmt.Println("Task ID:", id.TaskId)
+	case *core.Span_OperationId:
+		fmt.Println("Operation ID:", id.OperationId)
+	}
+
+	fmt.Println("Start Time:", span.StartTime)
+	fmt.Println("End Time:", span.EndTime)
+
+	for _, childSpan := range span.Spans {
+		printSpans(childSpan)
+	}
+}
+
+
+
+
+
+
+
+
 // GetExecutionMetrics returns a Span hierarchically breaking down the workflow execution into a collection of
 // Categorical and Reference Spans.
 func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
@@ -661,10 +692,8 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	}
 	
 	fmt.Println("start!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
-	// fmt.Println(span)
-	// for _, s := range span.Spans {
-	// 	fmt.Println(span.Id)
-	// }
+	//print all spans here, use the root of span
+	printSpans(span)
 	fmt.Println("finish!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 
 	return &admin.WorkflowExecutionGetMetricsResponse{Span: span}, nil
