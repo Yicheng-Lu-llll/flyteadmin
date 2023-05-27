@@ -647,28 +647,22 @@ func (m *MetricsManager) parseTaskNodeExecution(ctx context.Context, nodeExecuti
 
 
 
-func printSpans(span *core.Span) {
+func printSpans(span *core.Span, prefix string) {
 	switch id := span.Id.(type) {
 	case *core.Span_WorkflowId:
-		fmt.Println("Workflow ID:", id.WorkflowId)
+		fmt.Println(prefix, "Workflow ID:", id.WorkflowId)
 	case *core.Span_NodeId:
-		fmt.Println("Node ID:", id.NodeId)
+		fmt.Println(prefix, "Node ID:", id.NodeId)
 	case *core.Span_TaskId:
-		fmt.Println("Task ID:", id.TaskId)
+		fmt.Println(prefix, "Task ID:", id.TaskId)
 	case *core.Span_OperationId:
-		fmt.Println("Operation ID:", id.OperationId)
+		fmt.Println(prefix, "Operation ID:", id.OperationId)
 	}
-
-	fmt.Println("Start Time:", span.StartTime)
-	fmt.Println("End Time:", span.EndTime)
 
 	for _, childSpan := range span.Spans {
-		printSpans(childSpan)
+		printSpans(childSpan, prefix+"-")
 	}
 }
-
-
-
 
 
 
