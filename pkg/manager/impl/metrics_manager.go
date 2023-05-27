@@ -703,11 +703,12 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	//print all spans here, use the root of span
 	printSpans(span, "")
 	
-	 blob, err := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
-	 if err != nil {
-		 return nil, err
-	 }
-	 fmt.Println("blob is ", blob)
+	blob, err := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("blob.Url is ", blob.Url)
+	fmt.Println("blob.Bytes is ", blob.Bytes)
 
 
 	fmt.Println("finish!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
