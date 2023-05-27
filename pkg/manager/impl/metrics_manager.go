@@ -707,7 +707,7 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	printSpans(span, "")
 	
 
-	var timitSpan core.Span
+	
 	blob, err := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
 	if err != nil {
 		return nil, err
@@ -715,8 +715,9 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	fmt.Println("blob.Url is ", blob.Url)
 	fmt.Println("blob.Bytes is ", blob.Bytes)
 
-	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	printSpans(timitSpan, "")
+	// var timitSpan core.Span
+	// m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
+	// printSpans(timitSpan, "")
 
 
 
