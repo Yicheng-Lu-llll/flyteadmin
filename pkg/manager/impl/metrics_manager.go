@@ -244,7 +244,7 @@ func (m *MetricsManager) parseDynamicNodeExecution(ctx context.Context, nodeExec
 		*spans = append(*spans, createOperationSpan(nodeExecution.Closure.CreatedAt, taskExecutions[0].Closure.CreatedAt, nodeSetup))
 
 		// task execution(s)
-		parseTaskExecutions(ctx, taskExecutions, spans, depth)
+		m.parseTaskExecutions(ctx, taskExecutions, spans, depth)
 
 		nodeExecutions, err := m.getNodeExecutions(ctx, admin.NodeExecutionListRequest{
 			WorkflowExecutionId: nodeExecution.Id.ExecutionId,
@@ -557,17 +557,35 @@ func (m *MetricsManager) parseSubworkflowNodeExecution(ctx context.Context,
 	return nil
 }
 
-func getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
+func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
 	startedAt := time.Now()
 	endAt := startedAt.Add(time.Second)
 	item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "This is a just a sample")
-	return []*core.Span{item}
+
+
+
+	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
+
+	fmt.Println("blob.Url is ", blob.Url)
+	fmt.Println("blob.Bytes is ", blob.Bytes)
+
+	var timitSpan core.Span
+	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
+	fmt.Println("timitSpan is ", timitSpan)
+	printSpans(&timitSpan, "")
+	fmt.Println("hi!hi!!!!!!")
+
+
+
+
+
+	return []*core.Span{item, &timitSpan}
 
 }
 
 // parseTaskExecution partitions the task execution into a collection of Categorical and Reference Spans which are
 // returned as a hierarchical breakdown of the task execution.
-func parseTaskExecution(ctx context.Context, taskExecution *admin.TaskExecution) *core.Span {
+func (m *MetricsManager) parseTaskExecution(ctx context.Context, taskExecution *admin.TaskExecution) *core.Span {
 	fmt.Println("!I am in taskExecution!")
 	spans := make([]*core.Span, 0)
 
@@ -581,12 +599,12 @@ func parseTaskExecution(ctx context.Context, taskExecution *admin.TaskExecution)
 		// check if plugin has completed yet
 		if taskExecution.Closure.Duration == nil || reflect.DeepEqual(taskExecution.Closure.Duration, emptyDuration) {
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskExecution.Closure.UpdatedAt, taskRuntime))
-			spans = append(spans,getTimeItSpans(ctx, taskExecution.Id)...)
+			spans = append(spans,m.getTimeItSpans(ctx, taskExecution.Id)...)
 		} else {
 			// plugin execution
 			taskEndTime := timestamppb.New(taskExecution.Closure.StartedAt.AsTime().Add(taskExecution.Closure.Duration.AsDuration()))
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskEndTime, taskRuntime))
-			spans = append(spans,getTimeItSpans(ctx, taskExecution.Id)...)
+			spans = append(spans,m.getTimeItSpans(ctx, taskExecution.Id)...)
 
 			// backend overhead
 			if !taskExecution.Closure.UpdatedAt.AsTime().Before(taskEndTime.AsTime()) {
@@ -607,7 +625,7 @@ func parseTaskExecution(ctx context.Context, taskExecution *admin.TaskExecution)
 
 // parseTaskExecutions partitions the task executions into a collection of Categorical and Reference Spans which are
 // appended to the provided spans argument.
-func parseTaskExecutions(ctx context.Context, taskExecutions []*admin.TaskExecution, spans *[]*core.Span, depth int) {
+func (m *MetricsManager) parseTaskExecutions(ctx context.Context, taskExecutions []*admin.TaskExecution, spans *[]*core.Span, depth int) {
 	// sort task executions
 	sort.Slice(taskExecutions, func(i, j int) bool {
 		x := taskExecutions[i].Closure.CreatedAt.AsTime()
@@ -622,7 +640,7 @@ func parseTaskExecutions(ctx context.Context, taskExecutions []*admin.TaskExecut
 		}
 
 		if depth != 0 {
-			*spans = append(*spans, parseTaskExecution(ctx, taskExecution))
+			*spans = append(*spans, m.parseTaskExecution(ctx, taskExecution))
 		}
 	}
 }
@@ -647,7 +665,7 @@ func (m *MetricsManager) parseTaskNodeExecution(ctx context.Context, nodeExecuti
 		*spans = append(*spans, createOperationSpan(nodeExecution.Closure.CreatedAt, taskExecutions[0].Closure.CreatedAt, nodeSetup))
 
 		// parse task executions
-		parseTaskExecutions(ctx, taskExecutions, spans, depth)
+		m.parseTaskExecutions(ctx, taskExecutions, spans, depth)
 
 		// backend overhead
 		lastTask := taskExecutions[len(taskExecutions)-1]
@@ -705,21 +723,6 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	fmt.Println("start!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 	//print all spans here, use the root of span
 	printSpans(span, "")
-	
-
-	
-	blob, err := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println("blob.Url is ", blob.Url)
-	fmt.Println("blob.Bytes is ", blob.Bytes)
-
-	var timitSpan core.Span
-	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	fmt.Println("timitSpan is ", timitSpan)
-	printSpans(&timitSpan, "")
-	fmt.Println("hi!")
 
 
 
