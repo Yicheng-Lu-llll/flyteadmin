@@ -700,7 +700,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 
 
 
-	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
+	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
 
 	fmt.Println("blob.Url is ", blob.Url)
 	fmt.Println("blob.Bytes is ", blob.Bytes)
