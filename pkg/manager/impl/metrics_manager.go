@@ -690,7 +690,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	fmt.Println("timitSpan is ", timitSpan.Spans)
 	printSpans(&timitSpan, "")
-	fmt.Println("hohohahi")
+	fmt.Println("hohohahi!!!!!!!!!")
 
 	return timitSpan.Spans
 
