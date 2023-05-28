@@ -557,31 +557,6 @@ func (m *MetricsManager) parseSubworkflowNodeExecution(ctx context.Context,
 	return nil
 }
 
-func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
-	startedAt := time.Now()
-	endAt := startedAt.Add(time.Second)
-	item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "This is a just a sample")
-
-
-
-	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
-
-	fmt.Println("blob.Url is ", blob.Url)
-	fmt.Println("blob.Bytes is ", blob.Bytes)
-
-	var timitSpan core.Span
-	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	fmt.Println("timitSpan is ", timitSpan)
-	printSpans(&timitSpan, "")
-	fmt.Println("hi!hi!!!!!!")
-
-
-
-
-
-	return []*core.Span{item, &timitSpan}
-
-}
 
 // parseTaskExecution partitions the task execution into a collection of Categorical and Reference Spans which are
 // returned as a hierarchical breakdown of the task execution.
@@ -700,6 +675,26 @@ func printSpans(span *core.Span, prefix string) {
 }
 
 
+func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
+
+	fmt.Println("taskId.TaskId", taskId.TaskId.Name)
+
+
+
+	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/3b/f99740643d085486ab82-n0-0/timeit_spans.pb")
+
+	fmt.Println("blob.Url is ", blob.Url)
+	fmt.Println("blob.Bytes is ", blob.Bytes)
+
+	var timitSpan core.Span
+	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
+	fmt.Println("timitSpan is ", timitSpan)
+	printSpans(&timitSpan, "")
+	fmt.Println("hohohahi")
+
+	return timitSpan.Spans
+
+}
 
 
 
