@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"sort"
 	"time"
-
+	repositoryInterfaces "github.com/flyteorg/flyteadmin/pkg/repositories/interfaces"
 	"github.com/flyteorg/flyteadmin/pkg/manager/interfaces"
 
 	"github.com/flyteorg/flyteidl/gen/pb-go/flyteidl/admin"
@@ -58,6 +58,7 @@ type metrics struct {
 
 // MetricsManager handles computation of workflow, node, and task execution metrics.
 type MetricsManager struct {
+	db                        repositoryInterfaces.Repository
 	workflowManager      interfaces.WorkflowInterface
 	executionManager     interfaces.ExecutionInterface
 	nodeExecutionManager interfaces.NodeExecutionInterface
@@ -574,12 +575,10 @@ func (m *MetricsManager) parseTaskExecution(ctx context.Context, taskExecution *
 		// check if plugin has completed yet
 		if taskExecution.Closure.Duration == nil || reflect.DeepEqual(taskExecution.Closure.Duration, emptyDuration) {
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskExecution.Closure.UpdatedAt, taskRuntime))
-			spans = append(spans,m.getTimeItSpans(ctx, taskExecution.Id)...)
 		} else {
 			// plugin execution
 			taskEndTime := timestamppb.New(taskExecution.Closure.StartedAt.AsTime().Add(taskExecution.Closure.Duration.AsDuration()))
 			spans = append(spans, createOperationSpan(taskExecution.Closure.StartedAt, taskEndTime, taskRuntime))
-			spans = append(spans,m.getTimeItSpans(ctx, taskExecution.Id)...)
 
 			// backend overhead
 			if !taskExecution.Closure.UpdatedAt.AsTime().Before(taskEndTime.AsTime()) {
@@ -750,6 +749,7 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 
 // NewMetricsManager returns a new MetricsManager constructed with the provided arguments.
 func NewMetricsManager(
+	db repositoryInterfaces.Repository,
 	workflowManager interfaces.WorkflowInterface,
 	executionManager interfaces.ExecutionInterface,
 	nodeExecutionManager interfaces.NodeExecutionInterface,
@@ -760,6 +760,7 @@ func NewMetricsManager(
 	}
 
 	return &MetricsManager{
+		db:                        db,
 		workflowManager:      workflowManager,
 		executionManager:     executionManager,
 		nodeExecutionManager: nodeExecutionManager,

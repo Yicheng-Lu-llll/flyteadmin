@@ -1308,6 +1308,7 @@ func (m *ExecutionManager) CreateWorkflowEvent(ctx context.Context, request admi
 
 func (m *ExecutionManager) GetExecution(
 	ctx context.Context, request admin.WorkflowExecutionGetRequest) (*admin.Execution, error) {
+	fmt.Println("!!!I am in GetExecution!!!")
 	if err := validation.ValidateWorkflowExecutionIdentifier(request.Id); err != nil {
 		logger.Debugf(ctx, "GetExecution request [%+v] failed validation with err: %v", request, err)
 		return nil, err
