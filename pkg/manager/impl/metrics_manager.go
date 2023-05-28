@@ -675,6 +675,20 @@ func printSpans(span *core.Span, prefix string) {
 }
 
 
+
+func addTimeItSpans(span *core.Span) {
+	// if type is task
+	if _, ok := span.Id.(*core.Span_TaskId); ok {
+		fmt.Println("hello Task ID:", span.Id)
+	}
+	
+
+	for _, childSpan := range span.Spans {
+		addTimeItSpans(childSpan)
+	}
+}
+
+
 func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
 
 	fmt.Println("taskId.TaskId", taskId.TaskId.Name)
@@ -691,6 +705,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	fmt.Println("timitSpan is ", timitSpan.Spans)
 	printSpans(&timitSpan, "")
 	fmt.Println("hohohahi!!!!!!!!!")
+
 
 	return timitSpan.Spans
 
@@ -717,6 +732,7 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	
 	fmt.Println("start!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 	//print all spans here, use the root of span
+	addTimeItSpans(span)
 	printSpans(span, "")
 
 
