@@ -26,22 +26,22 @@ type MetricsRepo struct {
 
 func (r *MetricsRepo) Create() error {
 	fmt.Println("Hello World, I am a in meteics_repo.go create ")
-	fmt.Println("new!!!")
-	startedAt := time.Now()
-	endAt := startedAt.Add(time.Second)
-	input := core.Span{
-		StartTime: timestamppb.New(startedAt),
-		EndTime:   timestamppb.New(endAt),
-		Id: &core.Span_OperationId{
-			OperationId: "This is a just a sample in meteics_repo.go list! ",
-		},
-	}
+	// fmt.Println("new!!!")
+	// startedAt := time.Now()
+	// endAt := startedAt.Add(time.Second)
+	// input := core.Span{
+	// 	StartTime: timestamppb.New(startedAt),
+	// 	EndTime:   timestamppb.New(endAt),
+	// 	Id: &core.Span_OperationId{
+	// 		OperationId: "This is a just a sample in meteics_repo.go list! ",
+	// 	},
+	// }
 
 
-	tx := r.db.Create(&input)
-	if tx.Error != nil {
-		return r.errorTransformer.ToFlyteAdminError(tx.Error)
-	}
+	// tx := r.db.Create(&input)
+	// if tx.Error != nil {
+	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
+	// }
 	return nil
 
 
