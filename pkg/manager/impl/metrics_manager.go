@@ -58,7 +58,7 @@ type metrics struct {
 
 // MetricsManager handles computation of workflow, node, and task execution metrics.
 type MetricsManager struct {
-	db                        repositoryInterfaces.Repository
+	db                   repositoryInterfaces.Repository
 	workflowManager      interfaces.WorkflowInterface
 	executionManager     interfaces.ExecutionInterface
 	nodeExecutionManager interfaces.NodeExecutionInterface
@@ -694,11 +694,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	fmt.Println("I am going to call db")
 	fmt.Printf("Type of m.db: %T\n", m.db)
 
-	t := reflect.TypeOf( m.db)
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		fmt.Printf("Field Name: %s, Field Type: %s\n", field.Name, field.Type)
-	}
+	m.db.taskExecutionRepo
 
 
 
