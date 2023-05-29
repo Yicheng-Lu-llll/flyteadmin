@@ -692,7 +692,7 @@ func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
 func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
 
 	fmt.Println("I am going to call db")
-	fmt.Printf("Type of m.db: %T\n", m.db)
+	fmt.Printf("Type of m.db: %T\n", m.db.TaskExecutionRepo())
 
 	// m.db.taskExecutionRepo
 
