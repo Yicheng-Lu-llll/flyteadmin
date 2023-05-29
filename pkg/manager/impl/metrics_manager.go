@@ -687,7 +687,7 @@ func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
 
 
 func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
-	fmt.Println("I am going to call db hi")
+	fmt.Println("I am going to call db hihohohahi")
 	spans, _ := m.db.MetricsRepo().List(ctx, taskId)
 
 	// if len(spans) == 0 {
@@ -707,7 +707,7 @@ func (m *MetricsManager) downloadTimeItSpans(ctx context.Context, taskId *core.T
 
 	var timitSpan core.Span
 	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	m.db.MetricsRepo().Create()
+	m.db.MetricsRepo().Create(taskId)
 
 }
 

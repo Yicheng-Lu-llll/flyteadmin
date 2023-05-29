@@ -10,7 +10,7 @@ import (
 // Defines the interface for interacting with task execution models.
 type MetricsRepoInterface interface {
 	// Inserts a task execution model into the database store.
-	Create() error
+	Create(taskId *core.TaskExecutionIdentifier) error
 	List(ctx context.Context, input *core.TaskExecutionIdentifier) ([]*core.Span, error)
 
 }
