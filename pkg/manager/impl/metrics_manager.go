@@ -676,11 +676,8 @@ func printSpans(span *core.Span, prefix string) {
 
 
 func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
-
 	if id, ok := span.Id.(*core.Span_TaskId); ok {
-		fmt.Println("add time it spans based on taskId", span.Id)
 		span.Spans = append(span.Spans,m.getTimeItSpans(ctx, id.TaskId)...)
-
 	}
 
 	for _, childSpan := range span.Spans {
@@ -691,10 +688,17 @@ func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
 
 func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
 
+	
 	fmt.Println("I am going to call db")
 	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.MetricsRepo())
-	m.db.MetricsRepo().Create()
+	// m.db.MetricsRepo().Create()
 	spans, _ := m.db.MetricsRepo().List(ctx, taskId)
+
+	// if len(spans) == 0 {
+	if true {
+		spans = m.downloadTimeItSpans(ctx, taskId)
+	}
+
 	return spans
 
 
@@ -715,12 +719,25 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	// m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	
 
-
 	// timitSpan.Spans = append(timitSpan.Spans, item...)
 	// return timitSpan.Spans
 
 }
 
+func (m *MetricsManager) downloadTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
+	fmt.Println("I am in downloadTimeItSpans")
+	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
+
+	fmt.Println("blob.Url is ", blob.Url)
+	fmt.Println("blob.Bytes is ", blob.Bytes)
+
+	var timitSpan core.Span
+	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
+	
+	fmt.Println("timitSpan is ", timitSpan)
+	return timitSpan.Spans
+
+}
 
 
 // GetExecutionMetrics returns a Span hierarchically breaking down the workflow execution into a collection of
