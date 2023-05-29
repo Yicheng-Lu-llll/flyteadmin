@@ -271,6 +271,8 @@ func (m *TaskExecutionManager) ListTaskExecutions(
 		return nil, errors.NewFlyteAdminErrorf(codes.InvalidArgument,
 			"invalid pagination token %s for ListTaskExecutions", request.Token)
 	}
+	fmt.Println("!!!in ListTaskExecutions")
+	fmt.Printf("Type of m.db: %T\n", m.db)
 
 	output, err := m.db.TaskExecutionRepo().List(ctx, repoInterfaces.ListResourceInput{
 		InlineFilters: filters,
