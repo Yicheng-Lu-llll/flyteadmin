@@ -687,11 +687,8 @@ func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
 
 
 func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
-
-	
-	fmt.Println("I am going to call db!!!!!!!!!!!!!!!")
-	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.MetricsRepo())
-	// m.db.MetricsRepo().Create()
+	fmt.Println("I am going to call db")
+	m.db.MetricsRepo().Create()
 	spans, _ := m.db.MetricsRepo().List(ctx, taskId)
 
 	// if len(spans) == 0 {
@@ -702,39 +699,15 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	return spans
 
 
-	// fmt.Println("taskId.TaskId", taskId.TaskId.Name)
-
-	// startedAt := time.Now()
-	// endAt := startedAt.Add(time.Second)
-	// item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "This is a just a sample")
-
-
-
-	// blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
-
-	// fmt.Println("blob.Url is ", blob.Url)
-	// fmt.Println("blob.Bytes is ", blob.Bytes)
-
-	// var timitSpan core.Span
-	// m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	
-
-	// timitSpan.Spans = append(timitSpan.Spans, item...)
-	// return timitSpan.Spans
-
 }
 
 func (m *MetricsManager) downloadTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
 	fmt.Println("I am in downloadTimeItSpans")
 	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
 
-	fmt.Println("blob.Url is ", blob.Url)
-	fmt.Println("blob.Bytes is ", blob.Bytes)
-
 	var timitSpan core.Span
 	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	
-	fmt.Println("timitSpan is ", timitSpan)
 	return timitSpan.Spans
 
 }
@@ -757,14 +730,9 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 		return nil, err
 	}
 	
-	fmt.Println("start!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
-	//print all spans here, use the root of span
+	//add timeit spans
 	m.addTimeItSpans(ctx, span)
 	printSpans(span, "")
-
-
-
-	fmt.Println("finish!!!!!!!!!!!!!!!!!!!!!!!!!!span!!!!!!!!!!!!!!!!!!!!!")
 
 	return &admin.WorkflowExecutionGetMetricsResponse{Span: span}, nil
 }
