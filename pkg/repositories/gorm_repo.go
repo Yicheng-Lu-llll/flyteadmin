@@ -21,6 +21,7 @@ type GormRepo struct {
 	nodeExecutionEventRepo       interfaces.NodeExecutionEventRepoInterface
 	taskRepo                     interfaces.TaskRepoInterface
 	taskExecutionRepo            interfaces.TaskExecutionRepoInterface
+	metricsRepo				     interfaces.MetricsRepoInterface
 	workflowRepo                 interfaces.WorkflowRepoInterface
 	resourceRepo                 interfaces.ResourceRepoInterface
 	descriptionEntityRepo        interfaces.DescriptionEntityRepoInterface
@@ -64,6 +65,11 @@ func (r *GormRepo) TaskRepo() interfaces.TaskRepoInterface {
 func (r *GormRepo) TaskExecutionRepo() interfaces.TaskExecutionRepoInterface {
 	return r.taskExecutionRepo
 }
+func (r *GormRepo) metricsRepo() interfaces.TaskExecutionRepoInterface {
+	return r.metricsRepo
+}
+
+
 
 func (r *GormRepo) WorkflowRepo() interfaces.WorkflowRepoInterface {
 	return r.workflowRepo
@@ -105,6 +111,7 @@ func NewGormRepo(db *gorm.DB, errorTransformer errors.ErrorTransformer, scope pr
 		nodeExecutionEventRepo:       gormimpl.NewNodeExecutionEventRepo(db, errorTransformer, scope.NewSubScope("node_execution_events")),
 		taskRepo:                     gormimpl.NewTaskRepo(db, errorTransformer, scope.NewSubScope("tasks")),
 		taskExecutionRepo:            gormimpl.NewTaskExecutionRepo(db, errorTransformer, scope.NewSubScope("task_executions")),
+		metricsRepo:                  gormimpl.MetricsRepo(db, errorTransformer, scope.NewSubScope("metrics")),
 		workflowRepo:                 gormimpl.NewWorkflowRepo(db, errorTransformer, scope.NewSubScope("workflows")),
 		resourceRepo:                 gormimpl.NewResourceRepo(db, errorTransformer, scope.NewSubScope("resources")),
 		descriptionEntityRepo:        gormimpl.NewDescriptionEntityRepo(db, errorTransformer, scope.NewSubScope("description_entities")),
