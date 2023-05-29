@@ -24,9 +24,9 @@ type MetricsRepo struct {
 	metrics          gormMetrics
 }
 
-func (r *MetricsRepo) Create(input []*core.Span) error {
+func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdentifier) error {
 	fmt.Println("Hello World, I am a in meteics_repo.go create ")
-	fmt.Println(input)
+	fmt.Println("taskId", taskId)
 	// fmt.Println("new!!!")
 	// startedAt := time.Now()
 	// endAt := startedAt.Add(time.Second)
