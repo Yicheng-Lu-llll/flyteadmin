@@ -1,7 +1,7 @@
 package gormimpl
 
 import (
-	"context"
+	// "context"
 	"fmt"
 
 	
@@ -10,7 +10,7 @@ import (
 
 	flyteAdminDbErrors "github.com/flyteorg/flyteadmin/pkg/repositories/errors"
 	"github.com/flyteorg/flyteadmin/pkg/repositories/interfaces"
-	"github.com/flyteorg/flyteadmin/pkg/repositories/models"
+	// "github.com/flyteorg/flyteadmin/pkg/repositories/models"
 	"gorm.io/gorm"
 )
 
@@ -21,7 +21,7 @@ type MetricsRepo struct {
 	metrics          gormMetrics
 }
 
-func (r *MetricRepo) Create() error {
+func (r *MetricsRepo) Create() error {
 	fmt.Println("Hello World, I am a in meteics_repo.go create ")
 
 	return nil
@@ -30,8 +30,8 @@ func (r *MetricRepo) Create() error {
 
 
 // Returns an instance of TaskExecutionRepoInterface
-func NewMetricsRepoRepo(
-	db *gorm.DB, errorTransformer flyteAdminDbErrors.ErrorTransformer, scope promutils.Scope) interfaces.TaskExecutionRepoInterface {
+func NewMetricsRepo(
+	db *gorm.DB, errorTransformer flyteAdminDbErrors.ErrorTransformer, scope promutils.Scope) interfaces.MetricsRepoInterface {
 	metrics := newMetrics(scope)
 	return &MetricsRepo{
 		db:               db,

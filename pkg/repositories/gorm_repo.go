@@ -65,7 +65,7 @@ func (r *GormRepo) TaskRepo() interfaces.TaskRepoInterface {
 func (r *GormRepo) TaskExecutionRepo() interfaces.TaskExecutionRepoInterface {
 	return r.taskExecutionRepo
 }
-func (r *GormRepo) metricsRepo() interfaces.TaskExecutionRepoInterface {
+func (r *GormRepo) MetricsRepo() interfaces.MetricsRepoInterface {
 	return r.metricsRepo
 }
 
@@ -111,7 +111,7 @@ func NewGormRepo(db *gorm.DB, errorTransformer errors.ErrorTransformer, scope pr
 		nodeExecutionEventRepo:       gormimpl.NewNodeExecutionEventRepo(db, errorTransformer, scope.NewSubScope("node_execution_events")),
 		taskRepo:                     gormimpl.NewTaskRepo(db, errorTransformer, scope.NewSubScope("tasks")),
 		taskExecutionRepo:            gormimpl.NewTaskExecutionRepo(db, errorTransformer, scope.NewSubScope("task_executions")),
-		metricsRepo:                  gormimpl.MetricsRepo(db, errorTransformer, scope.NewSubScope("metrics")),
+		metricsRepo:                  gormimpl.NewMetricsRepo(db, errorTransformer, scope.NewSubScope("metrics")),
 		workflowRepo:                 gormimpl.NewWorkflowRepo(db, errorTransformer, scope.NewSubScope("workflows")),
 		resourceRepo:                 gormimpl.NewResourceRepo(db, errorTransformer, scope.NewSubScope("resources")),
 		descriptionEntityRepo:        gormimpl.NewDescriptionEntityRepo(db, errorTransformer, scope.NewSubScope("description_entities")),
