@@ -692,9 +692,9 @@ func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
 func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) []*core.Span {
 
 	fmt.Println("I am going to call db")
-	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.TaskExecutionRepo())
 	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.MetricsRepo())
 	m.db.MetricsRepo().Create()
+	m.db.MetricsRepo().List(ctx, taskId)
 
 	// m.db.taskExecutionRepo
 
@@ -717,7 +717,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	fmt.Println("timitSpan is ", timitSpan.Spans)
 	printSpans(&timitSpan, "")
-	fmt.Println("hohohahi!!!!!!!!!")
+	
 
 
 	timitSpan.Spans = append(timitSpan.Spans, item)

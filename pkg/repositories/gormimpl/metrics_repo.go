@@ -1,9 +1,10 @@
 package gormimpl
 
 import (
-	// "context"
+	"context"
 	"fmt"
 
+	"github.com/flyteorg/flyteidl/gen/pb-go/flyteidl/core"
 	
 
 	"github.com/flyteorg/flytestdlib/promutils"
@@ -23,6 +24,13 @@ type MetricsRepo struct {
 
 func (r *MetricsRepo) Create() error {
 	fmt.Println("Hello World, I am a in meteics_repo.go create ")
+
+	return nil
+}
+
+func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdentifier) error {
+	fmt.Println("Hello World, I am a in meteics_repo.go list ")
+	fmt.Println(input)
 
 	return nil
 }
