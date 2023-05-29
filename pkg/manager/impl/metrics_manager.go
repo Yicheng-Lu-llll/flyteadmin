@@ -699,7 +699,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 		field := t.Field(i)
 		fmt.Printf("Field Name: %s, Field Type: %s\n", field.Name, field.Type)
 	}
-}
+
 
 
 	fmt.Println("taskId.TaskId", taskId.TaskId.Name)
