@@ -47,7 +47,7 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 
 
 	tx := r.db.Create(&myInput)
-	fmt.Println("wa! in database!!!!!!!!!!! ")
+	fmt.Println("wa wa wa! in database!!!!!!!!!!! ")
 	if tx.Error != nil {
 		return r.errorTransformer.ToFlyteAdminError(tx.Error)
 	}

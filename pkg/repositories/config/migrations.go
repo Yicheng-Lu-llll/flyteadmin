@@ -23,6 +23,32 @@ var (
 )
 
 var LegacyMigrations = []*gormigrate.Migration{
+	{
+		ID: "spans",
+		Migrate: func(tx *gorm.DB) error {
+			return tx.AutoMigrate(&models.Spans{})
+		},
+		Rollback: func(tx *gorm.DB) error {
+			return tx.Migrator().DropTable("spans")
+		},
+	}
+
+	{
+		ID: "span",
+		Migrate: func(tx *gorm.DB) error {
+			return tx.AutoMigrate(&models.Span{})
+		},
+		Rollback: func(tx *gorm.DB) error {
+			return tx.Migrator().DropTable("span")
+		},
+	}
+
+	
+
+
+
+
+
 	// Create projects table.
 	{
 		ID: "2019-05-22-projects",
