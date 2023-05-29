@@ -678,7 +678,7 @@ func printSpans(span *core.Span, prefix string) {
 func (m *MetricsManager) addTimeItSpans(ctx context.Context, span *core.Span) {
 
 	if id, ok := span.Id.(*core.Span_TaskId); ok {
-		fmt.Println("hello Task ID:", span.Id)
+		fmt.Println("add time it spans based on taskId", span.Id)
 		span.Spans = append(span.Spans,m.getTimeItSpans(ctx, id.TaskId)...)
 
 	}
@@ -694,14 +694,11 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	fmt.Println("I am going to call db")
 	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.MetricsRepo())
 	m.db.MetricsRepo().Create()
-	item, _ := m.db.MetricsRepo().List(ctx, taskId)
-	
-
-	// m.db.taskExecutionRepo
+	spans, _ := m.db.MetricsRepo().List(ctx, taskId)
+	return spans
 
 
-
-	fmt.Println("taskId.TaskId", taskId.TaskId.Name)
+	// fmt.Println("taskId.TaskId", taskId.TaskId.Name)
 
 	// startedAt := time.Now()
 	// endAt := startedAt.Add(time.Second)
@@ -709,20 +706,18 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 
 
 
-	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
+	// blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
 
-	fmt.Println("blob.Url is ", blob.Url)
-	fmt.Println("blob.Bytes is ", blob.Bytes)
+	// fmt.Println("blob.Url is ", blob.Url)
+	// fmt.Println("blob.Bytes is ", blob.Bytes)
 
-	var timitSpan core.Span
-	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	fmt.Println("timitSpan is ", timitSpan.Spans)
-	printSpans(&timitSpan, "")
+	// var timitSpan core.Span
+	// m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	
 
 
-	timitSpan.Spans = append(timitSpan.Spans, item...)
-	return timitSpan.Spans
+	// timitSpan.Spans = append(timitSpan.Spans, item...)
+	// return timitSpan.Spans
 
 }
 
