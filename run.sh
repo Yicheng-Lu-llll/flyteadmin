@@ -1,6 +1,6 @@
 git add .
 git commit -s -m "develop"
-git push
+git push -f
 
 
 current_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -16,4 +16,4 @@ git push origin :refs/tags/$current_tag
 new_tag=v1.4.4
 
 git tag $new_tag
-git push -f origin $new_tag
+git push origin $new_tag
