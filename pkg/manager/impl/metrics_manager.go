@@ -694,6 +694,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	fmt.Println("I am going to call db")
 	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.TaskExecutionRepo())
 	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.MetricsRepo())
+	m.db.MetricsRepo().Create()
 
 	// m.db.taskExecutionRepo
 
