@@ -3,8 +3,10 @@ package gormimpl
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/flyteorg/flyteidl/gen/pb-go/flyteidl/core"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	
 
 	"github.com/flyteorg/flytestdlib/promutils"
@@ -28,11 +30,22 @@ func (r *MetricsRepo) Create() error {
 	return nil
 }
 
-func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdentifier) error {
+func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdentifier) ([]*core.Span, error) {
 	fmt.Println("Hello World, I am a in meteics_repo.go list ")
 	fmt.Println(input)
 
-	return nil
+	startedAt := time.Now()
+	endAt := startedAt.Add(time.Second)
+	item := &core.Span{
+		StartTime: timestamppb.New(startedAt),
+		EndTime:   timestamppb.New(endAt),
+		Id: &core.Span_OperationId{
+			OperationId: "This is a just a sample in  meteics_repo.go lis! ",
+		},
+	}
+
+	
+	return []*core.Span{item}, nil
 }
 
 
