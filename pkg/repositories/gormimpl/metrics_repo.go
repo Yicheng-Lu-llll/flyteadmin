@@ -36,19 +36,18 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	item := models.Span{
 		StartTime: &startTime,
 		EndTime:   &endTime,
-
-	
-		OperationId: "Hi, I am in database! ",
+		SpansTaskId: taskId.TaskId.Name,
+		OperationId: "Hi, I am in database!!! ",
 	}
 
 	myInput := models.Spans{
 		TaskId: taskId.TaskId.Name,
-		Spans: &[]models.Span{item},
+		Spans: []models.Span{item},
 	}
 
 
 	tx := r.db.Create(&myInput)
-	fmt.Println("in database!!!!!!!!!!! ")
+	fmt.Println("wa! in database!!!!!!!!!!! ")
 	if tx.Error != nil {
 		return r.errorTransformer.ToFlyteAdminError(tx.Error)
 	}

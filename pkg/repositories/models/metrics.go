@@ -5,13 +5,16 @@ import (
 )
 
 type Span struct {
+
+	ID           uint       `gorm:"primary_key"`
+	
+	SpansTaskId string 
+
 	StartTime    *time.Time
 	
 	EndTime *time.Time
 
 	OperationId string
-	
-
 
 }
 
@@ -21,8 +24,7 @@ type Spans struct {
 
 	TaskId string `gorm:"primary_key"`
 
-	Spans *[]Span
+	Spans []Span `gorm:"foreignkey:SpansTaskId"`
 
-	
 }
 
