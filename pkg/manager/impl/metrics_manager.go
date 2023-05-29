@@ -694,7 +694,7 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 	fmt.Println("I am going to call db")
 	fmt.Printf("Type of m.db.TaskExecutionRepo(): %T\n", m.db.MetricsRepo())
 	m.db.MetricsRepo().Create()
-	m.db.MetricsRepo().List(ctx, taskId)
+	item := m.db.MetricsRepo().List(ctx, taskId)
 
 	// m.db.taskExecutionRepo
 
@@ -702,9 +702,9 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 
 	fmt.Println("taskId.TaskId", taskId.TaskId.Name)
 
-	startedAt := time.Now()
-	endAt := startedAt.Add(time.Second)
-	item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "This is a just a sample")
+	// startedAt := time.Now()
+	// endAt := startedAt.Add(time.Second)
+	// item := createOperationSpan(timestamppb.New(startedAt), timestamppb.New(endAt), "This is a just a sample")
 
 
 
