@@ -707,7 +707,7 @@ func (m *MetricsManager) downloadTimeItSpans(ctx context.Context, taskId *core.T
 
 	var timitSpan core.Span
 	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
-	m.db.MetricsRepo().Create(taskId)
+	m.db.MetricsRepo().Create(timitSpan.Spans)
 
 }
 
