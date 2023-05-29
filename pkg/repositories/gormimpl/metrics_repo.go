@@ -49,7 +49,7 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 }
 
 func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdentifier) ([]*core.Span, error) {
-	fmt.Println("Hello World, I am a in meteics_repo.go list !!!! wao!!!")
+	fmt.Println("Hello World, I am a in meteics_repo.go list")
 	fmt.Println(input)
 
 	startedAt := time.Now()
