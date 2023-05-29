@@ -13,7 +13,7 @@ import (
 
 	flyteAdminDbErrors "github.com/flyteorg/flyteadmin/pkg/repositories/errors"
 	"github.com/flyteorg/flyteadmin/pkg/repositories/interfaces"
-	// "github.com/flyteorg/flyteadmin/pkg/repositories/models"
+	"github.com/flyteorg/flyteadmin/pkg/repositories/models"
 	"gorm.io/gorm"
 )
 
@@ -26,23 +26,32 @@ type MetricsRepo struct {
 
 func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdentifier) error {
 	fmt.Println("Hello World, I am a in meteics_repo.go create ")
+	// let's use taskId.TaskId.Name as task identifier now
 	fmt.Println("taskId.TaskId.Name", taskId.TaskId.Name)
-	// fmt.Println("new!!!")
-	// startedAt := time.Now()
-	// endAt := startedAt.Add(time.Second)
-	// input := core.Span{
-	// 	StartTime: timestamppb.New(startedAt),
-	// 	EndTime:   timestamppb.New(endAt),
-	// 	Id: &core.Span_OperationId{
-	// 		OperationId: "This is a just a sample in meteics_repo.go list! ",
-	// 	},
-	// }
 
 
-	// tx := r.db.Create(&input)
-	// if tx.Error != nil {
-	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
-	// }
+	startTime := input[0].StartTime.AsTime()
+	endTime := input[0].EndTime.AsTime()
+
+	item := models.Span{
+		StartTime: &startTime,
+		EndTime:   &endTime,
+
+	
+		OperationId: "Hi, I am in database! ",
+	}
+
+	myInput := models.Spans{
+		TaskId: taskId.TaskId.Name,
+		Spans: &[]models.Span{item},
+	}
+
+
+	tx := r.db.Create(&myInput)
+	fmt.Println("in database!!!!!!!!!!! ")
+	if tx.Error != nil {
+		return r.errorTransformer.ToFlyteAdminError(tx.Error)
+	}
 	return nil
 
 

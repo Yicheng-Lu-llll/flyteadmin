@@ -4,20 +4,25 @@ import (
 	"time"
 )
 
-
-
-// By convention, gorm foreign key references are of the form {ModelName}ID
-type SpansModel struct {
-	BaseModel
-
-	taskId string `gorm:"primary_key"`
-	
+type Span struct {
 	StartTime    *time.Time
 	
 	EndTime *time.Time
 
 	OperationId string
 	
+
+
+}
+
+// By convention, gorm foreign key references are of the form {ModelName}ID
+type Spans struct {
+	BaseModel
+
+	TaskId string `gorm:"primary_key"`
+
+	Spans *[]Span
+
 	
 }
 
