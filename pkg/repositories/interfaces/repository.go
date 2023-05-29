@@ -19,6 +19,7 @@ type Repository interface {
 	NodeExecutionRepo() NodeExecutionRepoInterface
 	NodeExecutionEventRepo() NodeExecutionEventRepoInterface
 	TaskExecutionRepo() TaskExecutionRepoInterface
+	MetricsRepo() MetricsRepoInterface
 	NamedEntityRepo() NamedEntityRepoInterface
 	DescriptionEntityRepo() DescriptionEntityRepoInterface
 	SchedulableEntityRepo() schedulerInterfaces.SchedulableEntityRepoInterface
