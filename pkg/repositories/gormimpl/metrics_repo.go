@@ -26,7 +26,7 @@ type MetricsRepo struct {
 
 func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdentifier) error {
 	fmt.Println("Hello World, I am a in meteics_repo.go create ")
-	fmt.Println("taskId", taskId)
+	fmt.Println("taskId.TaskId.Name", taskId.TaskId.Name)
 	// fmt.Println("new!!!")
 	// startedAt := time.Now()
 	// endAt := startedAt.Add(time.Second)

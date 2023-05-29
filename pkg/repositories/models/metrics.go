@@ -7,7 +7,7 @@ import (
 
 
 // By convention, gorm foreign key references are of the form {ModelName}ID
-type Spans struct {
+type SpansModel struct {
 	BaseModel
 
 	taskId string `gorm:"primary_key"`
