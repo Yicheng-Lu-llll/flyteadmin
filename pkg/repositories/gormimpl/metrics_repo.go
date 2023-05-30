@@ -47,7 +47,7 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 
 
 	r.db.Create(&myInput)
-	fmt.Println("hola! you see!!!!!!!!!!!!!!!!!")
+	fmt.Println("!!!!!!hola! you see!!!!!!!!!!!!!!!!!")
 	// if tx.Error != nil {
 	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
 	// }
@@ -55,21 +55,6 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 
 
 
-	// Retrieve spans with a specific TaskId
-	var spans models.Spans
-	r.db.Where("task_id = ?", taskId.TaskId.Name).Find(&spans)
-	fmt.Println("spans.TaskId", spans.TaskId)
-
-
-	// Iterate over the spans
-	for _, span := range spans.Spans {
-		// Access span data
-		fmt.Println("ID:", span.ID)
-		fmt.Println("SpansTaskId:", span.SpansTaskId)
-		fmt.Println("StartTime:", span.StartTime)
-		fmt.Println("EndTime:", span.EndTime)
-		fmt.Println("OperationId:", span.OperationId)
-	}
 
 
 
@@ -93,6 +78,29 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 			OperationId: "This is a just a sample in meteics_repo.go list! ",
 		},
 	}
+
+
+
+	// Retrieve spans with a specific TaskId
+	var spans models.Spans
+	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans)
+	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
+
+
+	// Iterate over the spans
+	for _, span := range spans.Spans {
+		// Access span data
+		fmt.Println("ID:", span.ID)
+		fmt.Println("SpansTaskId:", span.SpansTaskId)
+		fmt.Println("StartTime:", span.StartTime)
+		fmt.Println("EndTime:", span.EndTime)
+		fmt.Println("OperationId:", span.OperationId)
+	}
+
+
+
+
+
 
 	
 	return []*core.Span{item}, nil
