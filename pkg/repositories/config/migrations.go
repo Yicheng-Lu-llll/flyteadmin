@@ -31,7 +31,7 @@ var LegacyMigrations = []*gormigrate.Migration{
 		Rollback: func(tx *gorm.DB) error {
 			return tx.Migrator().DropTable("spans")
 		},
-	}
+	},
 
 	{
 		ID: "span",
@@ -41,7 +41,7 @@ var LegacyMigrations = []*gormigrate.Migration{
 		Rollback: func(tx *gorm.DB) error {
 			return tx.Migrator().DropTable("span")
 		},
-	}
+	},
 
 	
 
