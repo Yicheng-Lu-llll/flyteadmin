@@ -83,7 +83,7 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 
 	// Retrieve spans with a specific TaskId
 	var spans models.Spans
-	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans)
+	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans).Limit(1)
 	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
 
 
