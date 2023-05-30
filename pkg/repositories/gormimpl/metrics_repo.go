@@ -90,7 +90,6 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 	// Iterate over the spans
 	for _, span := range spans.Spans {
 		// Access span data
-		fmt.Println("ID:", span.id)
 		fmt.Println("SpansTaskId:", span.SpansTaskId)
 		fmt.Println("StartTime:", span.StartTime)
 		fmt.Println("EndTime:", span.EndTime)

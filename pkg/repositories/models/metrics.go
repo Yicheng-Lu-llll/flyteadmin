@@ -6,8 +6,6 @@ import (
 
 type Span struct {
 
-	id string `gorm:"primary_key"`
-	
 	SpansTaskId string 
 
 	StartTime    *time.Time
