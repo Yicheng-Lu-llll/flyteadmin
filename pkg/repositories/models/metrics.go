@@ -5,7 +5,7 @@ import (
 )
 
 type Span struct {
-	BaseModel
+	ID        uint `gorm:"index;unique"`
 	SpansTaskId string 
 
 	StartTime    *time.Time
