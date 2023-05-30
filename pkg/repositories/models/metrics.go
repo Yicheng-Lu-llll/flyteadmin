@@ -6,7 +6,7 @@ import (
 
 type Span struct {
 
-	BaseModel
+	id string `gorm:"primary_key"`
 	
 	SpansTaskId string 
 
@@ -22,7 +22,7 @@ type Span struct {
 type Spans struct {
 	BaseModel
 	TaskId string `gorm:"primary_key"`
-	Spans []Span `gorm:"foreignkey:SpansTaskId;references:ID"`
+	Spans []Span `gorm:"foreignkey:SpansTaskId"`
 
 }
 
