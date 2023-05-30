@@ -22,8 +22,7 @@ type Span struct {
 type Spans struct {
 
 	TaskId string `gorm:"primary_key"`
-
-	Spans []Span `gorm:"foreignkey:SpansTaskId"`
+	Spans []Span `gorm:"foreignkey:SpansTaskId;references:TaskId"`
 
 }
 
