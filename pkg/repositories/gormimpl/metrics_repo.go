@@ -56,12 +56,12 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 
 
 	// Retrieve spans with a specific TaskId
-	var spans []models.Span
+	var spans models.Spans
 	r.db.Where("task_id = ?", taskId).Find(&spans)
 
 
 	// Iterate over the spans
-	for _, span := range spans {
+	for _, span := range spans.Spans {
 		// Access span data
 		fmt.Println("ID:", span.ID)
 		fmt.Println("SpansTaskId:", span.SpansTaskId)
