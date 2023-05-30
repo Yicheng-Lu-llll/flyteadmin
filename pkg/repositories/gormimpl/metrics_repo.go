@@ -51,6 +51,29 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	if tx.Error != nil {
 		return r.errorTransformer.ToFlyteAdminError(tx.Error)
 	}
+
+
+
+
+	// Retrieve spans with a specific TaskId
+	var spans []models.Span
+	r.db.Where("task_id = ?", taskId).Find(&spans)
+
+
+	// Iterate over the spans
+	for _, span := range spans {
+		// Access span data
+		fmt.Println("ID:", span.ID)
+		fmt.Println("SpansTaskId:", span.SpansTaskId)
+		fmt.Println("StartTime:", span.StartTime)
+		fmt.Println("EndTime:", span.EndTime)
+		fmt.Println("OperationId:", span.OperationId)
+	}
+
+
+
+
+
 	return nil
 
 
