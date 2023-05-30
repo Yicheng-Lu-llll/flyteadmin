@@ -5,7 +5,7 @@ import (
 )
 
 type Span struct {
-
+	BaseModel
 	SpansTaskId string 
 
 	StartTime    *time.Time
