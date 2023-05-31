@@ -5,7 +5,7 @@ import (
 )
 
 type Span struct {
-	BaseModel `gorm:"primary_key"`
+	BaseModel
 	SpansTaskId string `gorm:"index"`
 
 	StartTime    *time.Time
@@ -18,7 +18,7 @@ type Span struct {
 
 // By convention, gorm foreign key references are of the form {ModelName}ID
 type Spans struct {
-	// BaseModel
+	BaseModel
 	TaskId string `gorm:"primary_key"`
 	Spans []Span `gorm:"foreignKey:SpansTaskId;references:TaskId"`
 }
