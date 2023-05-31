@@ -3,10 +3,10 @@ package gormimpl
 import (
 	"context"
 	"fmt"
-	// "time"
+	"time"
 
 	"github.com/flyteorg/flyteidl/gen/pb-go/flyteidl/core"
-	// "google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	
 
 	"github.com/flyteorg/flytestdlib/promutils"
@@ -64,32 +64,33 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 	fmt.Println("Hello World, I am a in meteics_repo.go list")
 	fmt.Println(input)
 
-	// startedAt := time.Now()
-	// endAt := startedAt.Add(time.Second)
-	// item := &core.Span{
-	// 	StartTime: timestamppb.New(startedAt),
-	// 	EndTime:   timestamppb.New(endAt),
-	// 	Id: &core.Span_OperationId{
-	// 		OperationId: "This is a just a sample in meteics_repo.go list! ",
-	// 	},
-	// }
+	startedAt := time.Now()
+	endAt := startedAt.Add(time.Second)
+	item := &core.Span{
+		StartTime: timestamppb.New(startedAt),
+		EndTime:   timestamppb.New(endAt),
+		Id: &core.Span_OperationId{
+			OperationId: "This is a just a sample in meteics_repo.go list! ",
+		},
+	}
 
 
 
-	// // Retrieve spans with a specific TaskId
-	// var spans models.Spans
-	// r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans).Limit(1)
-	// fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
+	// Retrieve spans with a specific TaskId
+	var spans models.Spans
+	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans).Limit(1)
+	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
 
 
-	// // Iterate over the spans
-	// for _, span := range spans.Spans {
-	// 	// Access span data
-	// 	fmt.Println("SpansTaskId:", span.SpansTaskId)
-	// 	fmt.Println("StartTime:", span.StartTime)
-	// 	fmt.Println("EndTime:", span.EndTime)
-	// 	fmt.Println("OperationId:", span.OperationId)
-	// }
+	// Iterate over the spans
+	fmt.Println("Iterate over the spans")
+	for _, span := range spans.Spans {
+		// Access span data
+		fmt.Println("SpansTaskId:", span.SpansTaskId)
+		fmt.Println("StartTime:", span.StartTime)
+		fmt.Println("EndTime:", span.EndTime)
+		fmt.Println("OperationId:", span.OperationId)
+	}
 
 
 
@@ -97,8 +98,8 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 
 
 	
-	// return []*core.Span{item}, nil
-	return []*core.Span{}, nil
+	return []*core.Span{item}, nil
+	// return []*core.Span{}, nil
 }
 
 
