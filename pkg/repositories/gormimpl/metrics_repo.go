@@ -30,19 +30,19 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	fmt.Println("taskId.TaskId.Name", taskId.TaskId.Name)
 
 
-	// startTime := input[0].StartTime.AsTime()
-	// endTime := input[0].EndTime.AsTime()
-	// item := models.Span{
-	// 	StartTime: &startTime,
-	// 	EndTime:   &endTime,
-	// 	SpansTaskId: taskId.TaskId.Name,
-	// 	OperationId: "Hi, I am in database!!! ",
-	// }
+	startTime := input[0].StartTime.AsTime()
+	endTime := input[0].EndTime.AsTime()
+	item := models.Span{
+		StartTime: &startTime,
+		EndTime:   &endTime,
+		SpansTaskId: taskId.TaskId.Name,
+		OperationId: "Hi, I am in database!!! ",
+	}
 
 	myInput := models.Spans{
 		TaskId: taskId.TaskId.Name,
-		// Spans: []models.Span{item},
-		Spans: []models.Span{},
+		Spans: []models.Span{item},
+		// Spans: []models.Span{},
 	}
 
 	// r.db.Omit("id").Create(&input)
