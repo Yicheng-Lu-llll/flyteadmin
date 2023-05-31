@@ -43,7 +43,7 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	myInput := models.Spans{
 		TaskId: taskId.TaskId.Name,
 		// Spans: []models.Span{item},
-		Spans: []models.Span{},
+		// Spans: []models.Span{},
 	}
 
 
