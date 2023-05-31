@@ -5,7 +5,7 @@ import (
 )
 
 type Span struct {
-	// BaseModel
+	BaseModel
 	// ID        uint `gorm:"primary_key"`
 	SpansTaskId string 
 
