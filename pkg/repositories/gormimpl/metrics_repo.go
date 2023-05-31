@@ -3,7 +3,7 @@ package gormimpl
 import (
 	"context"
 	"fmt"
-	// "time"
+	"time"
 
 	"github.com/flyteorg/flyteidl/gen/pb-go/flyteidl/core"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -30,9 +30,11 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	fmt.Println("taskId.TaskId.Name", taskId.TaskId.Name)
 
 
-	startTime := input[0].StartTime.AsTime()
-	endTime := input[0].EndTime.AsTime()
-	item := models.Span{
+	// startTime := input[0].StartTime.AsTime()
+	// endTime := input[0].EndTime.AsTime()
+	startTime := timestamppb.New(time.Now()).AsTime()
+	endTime := timestamppb.New(time.Now().Add(time.Second)).AsTime()
+	item := models.TimeItSpans{
 		StartTime: &startTime,
 		EndTime:   &endTime,
 		SpansTaskId: taskId.TaskId.Name,
@@ -41,15 +43,15 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 
 	myInput := models.Spans{
 		TaskId: taskId.TaskId.Name,
-		Spans: []models.Span{item},
+		Spans: []models.TimeItSpans{item},
 		// Spans: []models.Span{},
 	}
 
 	// r.db.Omit("id").Create(&input)
 	r.db.Where("task_id = ?", taskId.TaskId.Name).Delete(&models.Spans{})
 
-	r.db.Omit("id").FirstOrCreate(&myInput)
-	fmt.Println("!!!pupa!!!")
+	r.db.FirstOrCreate(&myInput)
+	fmt.Println("!!!pupa pupa pupa!!!")
 	// if tx.Error != nil {
 	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
 	// }
@@ -80,7 +82,7 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 
 	// Retrieve spans with a specific TaskId
 	var spans models.Spans
-	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans).Limit(1)
+	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans)
 	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
 	fmt.Println("!!!length:!!!", len(spans.Spans))
 

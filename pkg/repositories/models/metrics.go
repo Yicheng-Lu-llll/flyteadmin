@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Span struct {
+type TimeItSpans struct {
 	BaseModel
 	SpansTaskId string `gorm:"index"`
 
@@ -20,6 +20,15 @@ type Span struct {
 type Spans struct {
 	BaseModel
 	TaskId string `gorm:"primary_key"`
-	Spans []Span `gorm:"foreignKey:SpansTaskId;references:TaskId"`
+	Spans []TimeItSpans `gorm:"foreignKey:SpansTaskId;references:TaskId"`
 }
 
+func (s TimeItSpans) TableName() string {
+	return "timeItSpans"
+	}
+
+func (s Spans) TableName() string {
+	return "spans"
+	}
+
+	

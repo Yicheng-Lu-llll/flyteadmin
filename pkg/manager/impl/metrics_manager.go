@@ -701,10 +701,10 @@ func (m *MetricsManager) getTimeItSpans(ctx context.Context, taskId *core.TaskEx
 
 func (m *MetricsManager) downloadTimeItSpans(ctx context.Context, taskId *core.TaskExecutionIdentifier) {
 	fmt.Println("I am in downloadTimeItSpans")
-	blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
+	// blob, _ := m.urlData.Get(ctx,"s3://my-s3-bucket/test/6t/f585b6358e4124d26b33-n0-0/timeit_spans.pb")
 
 	var timitSpan core.Span
-	m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
+	// m.storageClient.ReadProtobuf(ctx, storage.DataReference(blob.Url), &timitSpan)
 	m.db.MetricsRepo().Create(timitSpan.Spans, taskId)
 
 }
