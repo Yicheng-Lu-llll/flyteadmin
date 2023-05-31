@@ -48,7 +48,7 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	// r.db.Omit("id").Create(&input)
 	r.db.Where("task_id = ?", taskId.TaskId.Name).Delete(&models.Spans{})
 
-	r.db.FirstOrCreate(&myInput)
+	r.db.Omit("id").FirstOrCreate(&myInput)
 	fmt.Println("!!!pupa!!!")
 	// if tx.Error != nil {
 	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
