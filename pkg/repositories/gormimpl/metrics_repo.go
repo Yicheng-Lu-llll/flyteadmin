@@ -3,7 +3,7 @@ package gormimpl
 import (
 	"context"
 	"fmt"
-	"time"
+	// "time"
 
 	"github.com/flyteorg/flyteidl/gen/pb-go/flyteidl/core"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -64,15 +64,15 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 	fmt.Println("Hello World, I am a in meteics_repo.go list")
 	fmt.Println(input)
 
-	startedAt := time.Now()
-	endAt := startedAt.Add(time.Second)
-	item := &core.Span{
-		StartTime: timestamppb.New(startedAt),
-		EndTime:   timestamppb.New(endAt),
-		Id: &core.Span_OperationId{
-			OperationId: "This is a just a sample in meteics_repo.go list! ",
-		},
-	}
+	// startedAt := time.Now()
+	// endAt := startedAt.Add(time.Second)
+	// item := &core.Span{
+	// 	StartTime: timestamppb.New(startedAt),
+	// 	EndTime:   timestamppb.New(endAt),
+	// 	Id: &core.Span_OperationId{
+	// 		OperationId: "This is a just a sample in meteics_repo.go list! ",
+	// 	},
+	// }
 
 
 
@@ -81,7 +81,9 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans).Limit(1)
 	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
 
-
+	
+	var coreSpan *core.Span
+	coreSpans := []*core.Span{coreSpan}
 	// Iterate over the spans
 	fmt.Println("Iterate over the spans")
 	for _, span := range spans.Spans {
@@ -90,6 +92,12 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 		fmt.Println("StartTime:", span.StartTime)
 		fmt.Println("EndTime:", span.EndTime)
 		fmt.Println("OperationId:", span.OperationId)
+
+		coreSpan.StartTime = timestamppb.New(*span.StartTime)
+		coreSpan.EndTime = timestamppb.New(*span.EndTime)
+		coreSpan.Id = &core.Span_OperationId{
+			OperationId: span.OperationId,
+		}
 	}
 
 
@@ -97,8 +105,9 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 
 
 
+
 	
-	return spans.Spans, nil
+	return coreSpans, nil
 	// return []*core.Span{}, nil
 }
 
