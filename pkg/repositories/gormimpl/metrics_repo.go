@@ -47,15 +47,10 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 
 
 	r.db.Create(&myInput)
-	fmt.Println("pupa")
+	fmt.Println("!!!pupa!!!")
 	// if tx.Error != nil {
 	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
 	// }
-
-
-
-
-
 
 
 

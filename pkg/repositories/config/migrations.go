@@ -19,29 +19,11 @@ import (
 var (
 	tables = []string{"execution_events", "executions", "launch_plans", "named_entity_metadata",
 		"node_execution_events", "node_executions", "projects", "resources", "schedulable_entities",
-		"schedule_entities_snapshots", "task_executions", "tasks", "workflows", "description_entities"}
+		"schedule_entities_snapshots", "task_executions", "tasks", "workflows", "description_entities","spans","span"}
 )
 
 var LegacyMigrations = []*gormigrate.Migration{
-	{
-		ID: "spans",
-		Migrate: func(tx *gorm.DB) error {
-			return tx.AutoMigrate(&models.Spans{})
-		},
-		Rollback: func(tx *gorm.DB) error {
-			return tx.Migrator().DropTable("spans")
-		},
-	},
 
-	{
-		ID: "span",
-		Migrate: func(tx *gorm.DB) error {
-			return tx.AutoMigrate(&models.Span{})
-		},
-		Rollback: func(tx *gorm.DB) error {
-			return tx.Migrator().DropTable("span")
-		},
-	},
 
 	
 
@@ -471,6 +453,26 @@ var LegacyMigrations = []*gormigrate.Migration{
 			return tx.Model(&models.Execution{}).Migrator().DropColumn(&models.Execution{}, "launch_entity")
 		},
 	},
+
+	{
+		ID: "spans",
+		Migrate: func(tx *gorm.DB) error {
+			return tx.AutoMigrate(&models.Spans{})
+		},
+		Rollback: func(tx *gorm.DB) error {
+			return tx.Migrator().DropTable("spans")
+		},
+	},
+
+	// {
+	// 	ID: "span",
+	// 	Migrate: func(tx *gorm.DB) error {
+	// 		return tx.AutoMigrate(&models.Span{})
+	// 	},
+	// 	Rollback: func(tx *gorm.DB) error {
+	// 		return tx.Migrator().DropTable("span")
+	// 	},
+	// },
 }
 
 var NoopMigrations = []*gormigrate.Migration{
