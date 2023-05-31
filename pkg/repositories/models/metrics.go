@@ -6,7 +6,7 @@ import (
 
 type Span struct {
 	BaseModel
-	ID        uint `gorm:"primary_key"`
+	ID        uint `gorm:"primary_key;column:id"`
 	SpansTaskId string 
 
 	StartTime    *time.Time
