@@ -98,7 +98,7 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 
 
 	
-	return []*core.Span{item}, nil
+	return spans.Spans, nil
 	// return []*core.Span{}, nil
 }
 
