@@ -80,6 +80,7 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 	var spans models.Spans
 	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans).Limit(1)
 	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
+	fmt.Println("!!!length:!!!", len(spans.Spans)))
 
 	
 	var coreSpan *core.Span
