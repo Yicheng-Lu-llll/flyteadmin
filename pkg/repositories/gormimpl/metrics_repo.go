@@ -30,33 +30,29 @@ func (r *MetricsRepo) Create(input []*core.Span, taskId *core.TaskExecutionIdent
 	fmt.Println("taskId.TaskId.Name", taskId.TaskId.Name)
 
 
-	// startTime := input[0].StartTime.AsTime()
-	// endTime := input[0].EndTime.AsTime()
+
 	startTime := timestamppb.New(time.Now()).AsTime()
 	endTime := timestamppb.New(time.Now().Add(time.Second)).AsTime()
-	item := models.TimeItSpans{
+
+	itema := models.Span{
 		StartTime: &startTime,
 		EndTime:   &endTime,
-		SpansTaskId: taskId.TaskId.Name,
-		OperationId: "Hi, I am in database!!! ",
-	}
-
-	myInput := models.Spans{
 		TaskId: taskId.TaskId.Name,
-		Spans: []models.TimeItSpans{item},
-		// Spans: []models.Span{},
+		Description: "Hi, I am in database 1!!! ",
 	}
 
-	// r.db.Omit("id").Create(&input)
-	r.db.Where("task_id = ?", taskId.TaskId.Name).Delete(&models.Spans{})
+	itemb := models.Span{
+		StartTime: &startTime,
+		EndTime:   &endTime,
+		TaskId: taskId.TaskId.Name,
+		Description: "Hi, I am in database 2!!! ",
+	}
 
-	r.db.FirstOrCreate(&myInput)
-	fmt.Println("!!!pupa pupa pupa!!!")
-	// if tx.Error != nil {
-	// 	return r.errorTransformer.ToFlyteAdminError(tx.Error)
-	// }
+	items := []models.Span{itema, itemb}
 
 
+	r.db.Create(&items)
+	fmt.Println("pupa")
 
 
 	return nil
@@ -68,55 +64,20 @@ func (r *MetricsRepo) List(ctx context.Context, input * core.TaskExecutionIdenti
 	fmt.Println("Hello World, I am a in meteics_repo.go list")
 	fmt.Println(input)
 
-	// startedAt := time.Now()
-	// endAt := startedAt.Add(time.Second)
-	// item := &core.Span{
-	// 	StartTime: timestamppb.New(startedAt),
-	// 	EndTime:   timestamppb.New(endAt),
-	// 	Id: &core.Span_OperationId{
-	// 		OperationId: "This is a just a sample in meteics_repo.go list! ",
-	// 	},
-	// }
-
-
+	
 
 	// Retrieve spans with a specific TaskId
-	var spans models.Spans
-	r.db.Where("task_id = ?", input.TaskId.Name).Find(&spans)
-	fmt.Println("!!!spans.TaskId!!!", spans.TaskId)
-	fmt.Println("!!!length:!!!", len(spans.Spans))
-
-	
-	var coreSpan *core.Span
-	coreSpans := []*core.Span{coreSpan}
-	// Iterate over the spans
-	fmt.Println("Iterate over the spans")
-	for _, span := range spans.Spans {
-		// Access span data
-		fmt.Println("SpansTaskId:", span.SpansTaskId)
-		fmt.Println("StartTime:", span.StartTime)
-		fmt.Println("EndTime:", span.EndTime)
-		fmt.Println("OperationId:", span.OperationId)
-
-		coreSpan.StartTime = timestamppb.New(*span.StartTime)
-		coreSpan.EndTime = timestamppb.New(*span.EndTime)
-		coreSpan.Id = &core.Span_OperationId{
-			OperationId: span.OperationId,
-		}
+	var items []models.Span
+	r.db.Where("task_id = ?", input.TaskId.Name).Find(&items)
+	fmt.Println("!!!length:!!!", len(items))
+	// print each span in items
+	for _, item := range items {
+		fmt.Println(item.Description)
 	}
-
-
-
-
-
-
-
-	
+	var coreSpans []*core.Span
 	return coreSpans, nil
-	// return []*core.Span{}, nil
+
 }
-
-
 
 // Returns an instance of TaskExecutionRepoInterface
 func NewMetricsRepo(

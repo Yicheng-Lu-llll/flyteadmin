@@ -457,22 +457,14 @@ var LegacyMigrations = []*gormigrate.Migration{
 	{
 		ID: "spans",
 		Migrate: func(tx *gorm.DB) error {
-			return tx.AutoMigrate(&models.Spans{})
+			return tx.AutoMigrate(&models.Span{})
 		},
 		Rollback: func(tx *gorm.DB) error {
 			return tx.Migrator().DropTable("spans")
 		},
 	},
 
-	{
-		ID: "timeItSpans",
-		Migrate: func(tx *gorm.DB) error {
-			return tx.AutoMigrate(&models.TimeItSpans{})
-		},
-		Rollback: func(tx *gorm.DB) error {
-			return tx.Migrator().DropTable("timeItSpans")
-		},
-	},
+
 }
 
 var NoopMigrations = []*gormigrate.Migration{

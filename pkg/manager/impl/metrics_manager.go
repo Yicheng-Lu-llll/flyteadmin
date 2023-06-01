@@ -721,6 +721,31 @@ func (m *MetricsManager) GetExecutionMetrics(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
+	// print all field in execution
+	fmt.Println("!!!execution: !!!")
+	// fmt.Println(execution)
+	// fmt.Println(execution.Closure)
+
+	
+	
+	v := reflect.ValueOf( execution.Closure.OutputResult)
+	t := v.Type() 
+	if v.Kind() == reflect.Ptr {
+		// If the kind is Ptr, we need to get the element the pointer points to.
+		// Elem() dereferences the pointer.
+		v = v.Elem()
+		t = v.Type() // Get the type of the dereferenced struct
+	}
+
+
+	for i := 0; i < v.NumField(); i++ {
+		// Get the field name by calling t.Field(i).Name
+		fmt.Printf("Field Name: %s, Field Value: %v\n", t.Field(i).Name, v.Field(i))
+	}
+
+	fmt.Println(execution.Closure.OutputResult.GetOutputUri())
+
+
 
 	span, err := m.parseExecution(ctx, execution, int(request.Depth))
 	if err != nil {
